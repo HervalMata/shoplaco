@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-use Mnabialek\LaravelEloquentFilter\Traits\Filterable;
 
 /**
  * @method categories()
@@ -23,7 +22,7 @@ class Product extends Model
     use HasFactory;
     use Sluggable;
     use SoftDeletes;
-    use Filterable;
+    //use Filterable;
 
     const BASE_PATH = 'app/public';
     const DIR_PRODUCTS = 'products';

@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
         ])->each(function ($user) use ($faker) {
             Model::reguard();
             $user->updateWithProfile([
+                'type' => 1,
                 'cidade_id' => Cidade::all()->random()->id,
                 'address' => $faker->streetAddress,
                 'number' => $faker->randomNumber(),
@@ -46,6 +47,7 @@ class UserSeeder extends Seeder
         ])->each(function ($user) use ($faker) {
             Model::reguard();
             $user->updateWithProfile([
+                'type' => $faker->numberBetween(1, 3),
                 'cidade_id' => Cidade::all()->random()->id,
                 'address' => $faker->streetAddress,
                 'number' => $faker->randomNumber(),

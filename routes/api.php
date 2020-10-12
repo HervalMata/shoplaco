@@ -18,6 +18,9 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('pagseguro', [\App\Http\Controllers\Api\Shop\PagSeguroController::class, 'pagseguro'])->name('pagseguro');
+Route::name('login')->post('login', 'AuthController@login');
+Route::name('refresh')->post('refresh', 'AuthController@refresh');
 Route::resource('shop/categories', \App\Http\Controllers\Api\Shop\CategoryController::class,
         ['only' => ['index', 'show']]);
 Route::resource('shop/users', \App\Http\Controllers\Api\Shop\UserController::class,
@@ -31,6 +34,8 @@ Route::get('shop/products/featured', [\App\Http\Controllers\Api\Shop\ProductCont
 Route::get('shop/products/recommended', [\App\Http\Controllers\Api\Shop\ProductController::class, 'indexByRecommended']);
 
 Route::group(['middleware' => 'auth:api', 'jwt.refresh'], function () {
+    Route::name('me')->post('me', 'AuthController@me');
+    Route::name('logout')->post('logout', 'AuthController@logout');
     Route::patch('categories/{category}/restore', [\App\Http\Controllers\Api\Admin\CategoryController::class, 'restore']);
     Route::patch('products/{product}/restore', [\App\Http\Controllers\Api\Admin\ProductController::class, 'restore']);
     Route::patch('users/{user}/restore', [\App\Http\Controllers\Api\Admin\UserController::class, 'restore']);

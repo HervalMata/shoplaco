@@ -17,6 +17,7 @@ class CreateUserProfileTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('type')->default(1);
             $table->unsignedBigInteger('cidade_id');
             $table->foreign('cidade_id')->references('id')->on('cidades');
             $table->string('country')->default('Brasil');

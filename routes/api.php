@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('pagseguro', [\App\Http\Controllers\Api\Shop\PagSeguroController::class, 'pagseguro'])->name('pagseguro');
 Route::get('pagseguro-transparente', [\App\Http\Controllers\Api\Shop\PagSeguroController::class, 'transparente'])->name('pagseguro.transparente');
 Route::post('pagseguro-transparente', [\App\Http\Controllers\Api\Shop\PagSeguroController::class, 'getCode'])->name('pagseguro.code.transparente');
+Route::post('pagseguro-billet', [\App\Http\Controllers\Api\Shop\PagSeguroController::class, 'billet'])->name('pagseguro.billet');
 Route::name('login')->post('login', 'AuthController@login');
 Route::name('refresh')->post('refresh', 'AuthController@refresh');
 Route::resource('shop/categories', \App\Http\Controllers\Api\Shop\CategoryController::class,

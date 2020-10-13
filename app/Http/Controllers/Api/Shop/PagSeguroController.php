@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PagSeguro;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class PagSeguroController extends Controller
 {
@@ -34,5 +35,11 @@ class PagSeguroController extends Controller
     public function getCode(PagSeguro $pagSeguro)
     {
         return $pagSeguro->getSessionId();
+    }
+
+    public function billet(Request $request, PagSeguro $pagSeguro)
+    {
+        $sendHash = $request->get('sendHash');
+        return $pagSeguro->paymentBillet($sendHash);
     }
 }

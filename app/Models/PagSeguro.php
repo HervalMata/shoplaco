@@ -57,6 +57,10 @@ class PagSeguro extends Model
         return $code;
     }
 
+    /**
+     * @return \SimpleXMLElement
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
     public function getSessionId()
     {
         $params = [
@@ -64,7 +68,6 @@ class PagSeguro extends Model
             'token' => config('pagseguro.token'),
         ];
         $params = http_build_query($params);
-        //dd($params);
         $guzzle = new Guzzle;
         $response = $guzzle->request('POST', config('pagseguro.url_transparente_session_sandbox'), [
             'query' => $params,
@@ -73,5 +76,55 @@ class PagSeguro extends Model
         $contents = $body->getContents();
         $xml = simplexml_load_string($contents);
         return $xml->id;
+    }
+
+    /**
+     * @param $sendHash
+     * @return \SimpleXMLElement
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function paymentBillet($sendHash)
+    {
+        $guzzle = new Guzzle;
+        $params = [
+            'email' => config('pagseguro.email'),
+            'token' => config('pagseguro.token'),
+            'senderHash' => $sendHash,
+            'paymentMode' => 'default',
+            'paymentMethod' => 'boleto',
+            'currency' => 'BRL',
+            'itemId1' => '0001',
+            'itemDescription1' => 'Produto PagSeguroI',
+            'itemAmount1' => '99999.99',
+            'itemQuantity1' => '1',
+            'itemWeight1' => '1000',
+            'itemId2' => '0002',
+            'itemDescription2' => 'Produto PagSeguroII',
+            'itemAmount2' => '99999.98',
+            'itemQuantity2' => '2',
+            'itemWeight2' => '750',
+            'reference' => 'REF1234',
+            'senderName' => 'Jose Comprador',
+            'senderAreaCode' => '99',
+            'senderPhone' => '999999999',
+            'senderEmail' => 'c20689406015405234397@sandbox.pagseguro.com.br',
+            'senderCPF' => '54793120652',
+            'shippingType' => '1',
+            'shippingAddressStreet' => 'Av. PagSeguro',
+            'shippingAddressNumber' => '9999',
+            'shippingAddressComplement' => '99º andar',
+            'shippingAddressDistrict' => 'Jardim Internet',
+            'shippingAddressPostalCode' => '99999999',
+            'shippingAddressCity' => 'Cidade Exemplo',
+            'shippingAddressState' => 'SP',
+            'shippingAddressCountry' => 'ATA',
+        ];
+        $response = $guzzle->request('POST', config('pagseguro.url_transparente_sandbox'), [
+            'form_params' => $params,
+        ]);
+        $body = $response->getBody();
+        $contents = $body->getContents();
+        $xml = simplexml_load_string($contents);
+        return $xml->paymentLink;
     }
 }

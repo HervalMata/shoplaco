@@ -12,7 +12,7 @@
     @csrf
 
 </form>
-<a href="" class="btn-finished">Finalizar Compra</a>
+<a href="" class="btn-finished">Pagamento com Boleto Bancário</a>
 <div class="payments-methods"></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="{{config('pagseguro.url_transparente_js_sandbox')}}"></script>
@@ -31,7 +31,8 @@
                 data: data
             }).done(function (data) {
                 PagSeguroDirectPayment.setSessionId(data);
-                getPaymentMethods();
+                //getPaymentMethods();
+                paymentBillet();
             }).fail(function () {
                 alert("Request Failed... :-(");
             });
@@ -54,7 +55,26 @@
                 }
             });
         }
+
+        function paymentBillet() {
+            var sendHash = PagSeguroDirectPayment.getSenderHash();
+            var data = $('#form').serialize() + "&sendHash = " + sendHash;
+            $.ajax({
+                url: "{{route('pagseguro.billet')}}",
+                method: "POST",
+                data: data
+            }).done(function (url) {
+                //PagSeguroDirectPayment.setSessionId(data);
+                //getPaymentMethods();
+                console.log(data);
+                location.href = url;
+            }).fail(function () {
+                alert("Request Failed... :-(");
+            });
+        }
     });
+
+
 </script>
 </body>
 </html>

@@ -42,4 +42,15 @@ class PagSeguroController extends Controller
         $sendHash = $request->get('sendHash');
         return $pagSeguro->paymentBillet($sendHash);
     }
+
+    public function card()
+    {
+        return view('pagseguro-transparente-card');
+    }
+
+    public function cardTransaction(Request $request, PagSeguro $pagSeguro)
+    {
+        return $pagSeguro->paymentCredCard($request);
+    }
+
 }
